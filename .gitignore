@@ -1,0 +1,9 @@
+_site
+.sass-cache
+.jeykll-cache
+.jeykll-metadata
+vendor
+
+/Gemfile
+/Gemfile.lock
+/minima-reboot.gemspec
