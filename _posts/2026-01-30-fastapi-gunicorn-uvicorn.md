@@ -3,7 +3,7 @@ layout: post
 title: "FastAPI / gunicorn / uvicorn / 동기 / 비동기 "
 ---
 
-### [FastAPI](https://fastapi.tiangolo.com/ko/)
+##### [FastAPI](https://fastapi.tiangolo.com/ko/)
 FastAPI에서 작성된 코드는 단독으로 실행되어서 Web API로써 동작할 수 없다.  
 HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부터 데이터를 받아 HTTP 응답을 제공하는 서버의 역할을 하는 것은 Uvicorn이다.
 
@@ -12,7 +12,7 @@ HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부
    - def의 경우 외부 쓰레드 풀에서 다이렉트로 실행하여 서버가 블록킹되지 않음
    - async def는 외부 쓰레드 풀에서 실행하지 않아 블록킹됨
 
-### [Uvicorn](https://leapcell.io/blog/ko/fastapi-uvicorn-beulleijeing-seupideu-the-tech-behind-the-hype)
+##### [Uvicorn](https://leapcell.io/blog/ko/fastapi-uvicorn-beulleijeing-seupideu-the-tech-behind-the-hype)
 > uvloop와 httptools를 기반으로 구축된, 비동기 처리에 최적화된 Python ASGI(Asynchronous Server Gateway Interface) 서버로 FASTApi와 함께 사용
 
 - 특징   
@@ -24,7 +24,7 @@ HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부
 - 배포    
     `개발 환경에서 단독으로 사용하기 좋으며, 운영 환경에서는 안정성을 위해 Gunicorn과 결합하여 Uvicorn 워커를 사용하는 것을 권장`
 
-### [Gunicorn](https://gunicorn.org/)
+##### [Gunicorn](https://gunicorn.org/)
 > Python WSGI(Web Server Gateway Interface) HTTP 서버로 FastAPI 와 같은 웹 프레임워크와 Nginx 등의 `웹 서버 사이`에서 요청을 처리하는 경량 WAS
 
 1. 특징 및 장점  
@@ -35,7 +35,7 @@ HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부
 2. 작동방식  
    - 일반적으로 Nginx(리버스 프록시) 뒤에서 작동하며, Nginx가 정적 파일을 처리하고 Gunicorn이 동적 파이썬 어플리케이션 요청을 처리하는 구조로 사용 
 
-### 왜 Gunicorn과 Uvicorn을 함께 사용하는가?
+##### 왜 Gunicorn과 Uvicorn을 함께 사용하는가?
 > Gunicorn은 worker 관리 및 로드 밸런싱을 담당하고 Uvicorn은 비동기 요청 처리를 담당하여 안정적이고 효육적인 서버를 운영
 
 1. Gunicorn (프로세스 관리):
@@ -46,7 +46,7 @@ HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부
    - ASGI 지원: FastAPI 같은 ASGI 표준을 따르는 비동기 프레임워크를 지원하는 초고속 서버
    - 비동기 최적화: uvloop와 httptools를 기반으로 하여 비동기 요청을 매우 빠르게 처리함
 
-### 이상적인(권장) 설정 (workers + threads)
+##### 이상적인(권장) 설정 (workers + threads)
 > - Worker 수 : (2 * CPU 코어수) + 1  
 > - Thread 수 : worker 클래스를 Uvivorn으로 설정 했다면, Thread는 1로 두거나 설정하지 않음
 
@@ -61,13 +61,13 @@ gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bin
   - I/O 바운드 작업이 많은 경우: 권장 사항 적용
   - CPU 바운드 작업이 많은 경우: 워커 수를 CPU 코어 수와 같게 줄이거나 조금 더 많게 설정하는 것이 효율적일 수 있음 
 
-### 항상 Gunicorn과 Uvicorn을 같이 사용해야 하는가?
+##### 항상 Gunicorn과 Uvicorn을 같이 사용해야 하는가?
 > 아니다. 
 
 - 베어메탈 서버(Bare Metal Server)일 경우는 Uvicorn + Gunicorn을 같이 활용
 - 분산 시스템 (Kubernetes, Docker Swarm)일 경우는 Uvicorn만 사용하여 클러스터 수준에서 수행
 
-### Uvicorn, FastAPI 비동기 매커니즘
+##### Uvicorn, FastAPI 비동기 매커니즘
 
 파이썬으로 구현된 ASGI Server, ASGI Framework는 프로세스 기반으로 구현
 
@@ -102,7 +102,7 @@ ASGI는 요청에 대해 비동기적으로 처리할 수 있습니다.
      
   3. asyncio.iscoroutinefunction() 사용
   
-### FastAPI에서 비동기를 사용하는 이유와 경우
+##### FastAPI에서 비동기를 사용하는 이유와 경우
 
 > DB 쿼리, 외부 API 요청, 파일 I/O 등 I/O Bound 작업이 많아 대기 시간이 발생할 때 성능을 극대화하기 위해 사용
 
@@ -136,7 +136,7 @@ async def read_data():
     return {"message": "Async data"}
 </code></pre>
 
-### FastAPI 비동기 라우트 함수 적용
+##### FastAPI 비동기 라우트 함수 적용
 async def를 사용하여 라우트 함수를 정의하면 입출력(I/O) 바운드 작업 (DB, 외부 API 호출)시 이벤트 루프를 차단하지 않아 높은 동시성을 확보할 수 있다.  
 CPU 작업이 많은 경우 def를 사용하여 쓰레드풀에서 실행하는 것이 좋다.
 
@@ -148,6 +148,5 @@ CPU 작업이 많은 경우 def를 사용하여 쓰레드풀에서 실행하는 
 
 ---
 
-`[Reference] Google 검색`  
-`https://velog.io/@bbkyoo/gunicorn-uvicorn`  
-`https://yscho03.tistory.com/328`
+https://velog.io/@bbkyoo/gunicorn-uvicorn  
+https://yscho03.tistory.com/328
