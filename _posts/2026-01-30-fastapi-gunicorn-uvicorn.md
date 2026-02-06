@@ -4,6 +4,7 @@ title: "FastAPI / gunicorn / uvicorn / 동기 / 비동기 "
 ---
 
 ##### [FastAPI](https://fastapi.tiangolo.com/ko/)
+
 FastAPI에서 작성된 코드는 단독으로 실행되어서 Web API로써 동작할 수 없다.  
 HTTP 요청을 받아 FastAPI 인스턴스에게 전달하고 인스턴스로부터 데이터를 받아 HTTP 응답을 제공하는 서버의 역할을 하는 것은 Uvicorn이다.
 
